@@ -1,0 +1,165 @@
+/* LocalEasyNotepad: light and dark themes, no dependencies */
+
+:root {
+  --bg: #f6f5f2; --panel: #ffffff; --side: #eeede8; --text: #1f2328; --muted: #6b7280;
+  --line: #dedbd3; --accent: #2f6fed; --accent-t: #ffffff; --hover: rgba(0,0,0,.06);
+  --sel: rgba(47,111,237,.13); --danger: #d1344a;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme=light]) {
+    --bg: #15171b; --panel: #1c1f24; --side: #131518; --text: #e6e8eb; --muted: #8b93a0;
+    --line: #2b2f36; --accent: #6ea0ff; --accent-t: #0d1117; --hover: rgba(255,255,255,.08);
+    --sel: rgba(110,160,255,.18); --danger: #ff6b7d;
+  }
+}
+:root[data-theme=dark] {
+  --bg: #15171b; --panel: #1c1f24; --side: #131518; --text: #e6e8eb; --muted: #8b93a0;
+  --line: #2b2f36; --accent: #6ea0ff; --accent-t: #0d1117; --hover: rgba(255,255,255,.08);
+  --sel: rgba(110,160,255,.18); --danger: #ff6b7d;
+}
+
+/* Note and folder colors */
+.c-red { --c: #e5534b } .c-orange { --c: #e8883a } .c-yellow { --c: #d9a920 }
+.c-green { --c: #3fa568 } .c-blue { --c: #3b82d6 } .c-purple { --c: #8b6ad9 } .c-pink { --c: #d65d9f }
+
+* { box-sizing: border-box }
+html, body { height: 100%; margin: 0 }
+body { font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text) }
+[hidden] { display: none !important }
+button, input, select, textarea { font: inherit; color: inherit }
+button { cursor: pointer; border: 1px solid var(--line); background: var(--panel); border-radius: 8px; padding: 6px 12px }
+button:hover { background: var(--hover) }
+button:disabled { opacity: .5; cursor: default }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px }
+.primary { background: var(--accent); color: var(--accent-t); border-color: transparent }
+.primary:hover { background: var(--accent); filter: brightness(1.1) }
+.danger { color: var(--danger) }
+.plain { border: 0; background: transparent; padding: 0; text-align: left }
+.plain:hover { background: transparent }
+.wide { width: 100% }
+.grow { flex: 1 }
+.row { display: flex; gap: 8px; align-items: center }
+.end { justify-content: flex-end; margin-top: 14px }
+.muted { color: var(--muted) }
+.small { font-size: 12.5px }
+.err { color: var(--danger); min-height: 1.4em; margin: 6px 0 0; font-size: 13.5px }
+
+.ib { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 6px; border: 0;
+  background: transparent; border-radius: 8px; color: var(--muted); text-decoration: none }
+.ib:hover { background: var(--hover); color: var(--text) }
+.ib.on { color: var(--accent) }
+.ib.danger { color: var(--danger) }
+.ico { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none }
+.ico.big { width: 40px; height: 40px; color: var(--muted) }
+
+/* Layout */
+.app { display: grid; grid-template-columns: 240px 320px 1fr; height: 100% }
+#side { background: var(--side); border-right: 1px solid var(--line); padding: 14px 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px }
+#scrim { display: none }
+.brand { font-weight: 700; font-size: 17px; padding: 0 6px 10px }
+.head { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding: 0 6px;
+  font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted) }
+
+.nav { display: flex; align-items: center; gap: 8px; width: 100%; padding: 5px 8px; border: 0; background: transparent; border-radius: 8px; text-align: left }
+.nav:hover { background: var(--hover) }
+.nav.on { background: var(--sel) }
+.nav.over { outline: 2px dashed var(--accent); outline-offset: -2px }
+.nav .lbl { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.nav .cnt { color: var(--muted); font-size: 12.5px }
+.nav .act { opacity: 0; padding: 3px }
+.nav:hover .act, .nav:focus-within .act { opacity: 1 }
+@media (hover: none) { .nav .act { opacity: 1 } }
+.dot { width: 14px; height: 14px; padding: 0; border-radius: 50%; flex: none; background: var(--c, transparent); border: 2px solid var(--c, var(--muted)) }
+.dot:hover { background: var(--c, transparent) }
+.pad0 { padding: 0 8px; margin: 4px 0 }
+
+.tagcloud { display: flex; flex-wrap: wrap; gap: 6px; padding: 4px 6px }
+.tagbtn { padding: 1px 9px; border-radius: 99px; font-size: 13px; background: transparent }
+.tagbtn.on { background: var(--sel); border-color: var(--accent) }
+
+.sidefoot { margin-top: auto; padding-top: 14px; display: flex; flex-direction: column; gap: 6px }
+.meter { display: block }
+progress { width: 100%; height: 6px; accent-color: var(--accent) }
+
+/* Note list */
+#listPane { background: var(--bg); border-right: 1px solid var(--line); display: flex; flex-direction: column; min-width: 0; min-height: 0 }
+.listhead { display: flex; gap: 6px; padding: 12px; align-items: center }
+#search { flex: 1; min-width: 0; padding: 7px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel) }
+.listsub { display: flex; justify-content: space-between; align-items: center; padding: 0 14px 6px }
+.listsub h2 { margin: 0; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted) }
+.listsub button { padding: 2px 10px; font-size: 13px }
+#list { overflow-y: auto; flex: 1 }
+.pad { padding: 14px }
+.note { padding: 10px 12px; border-bottom: 1px solid var(--line); border-left: 4px solid var(--c, transparent); cursor: pointer }
+.note:hover { background: var(--hover) }
+.note.sel { background: var(--sel) }
+.note .t { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+.note .s { color: var(--muted); font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+.note .m { display: flex; gap: 6px; align-items: center; margin-top: 2px; color: var(--muted); font-size: 12px; flex-wrap: wrap }
+.note .m .ico { width: 13px; height: 13px }
+
+/* Editor */
+#editorPane { background: var(--panel); display: flex; flex-direction: column; min-width: 0; min-height: 0; height: 100% }
+#noteView { display: flex; flex-direction: column; height: 100%; min-height: 0 }
+.empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; flex: 1; color: var(--muted); text-align: center; padding: 20px }
+.bar { display: flex; align-items: center; gap: 2px; padding: 8px 12px; border-bottom: 1px solid var(--line); flex-wrap: wrap }
+.swatches { display: inline-flex; gap: 6px; margin: 0 8px }
+.sw { width: 18px; height: 18px; padding: 0; border-radius: 50%; background: var(--c, transparent); border: 2px solid var(--c, var(--muted)) }
+.sw:hover { background: var(--c, var(--hover)) }
+.sw[aria-pressed=true] { box-shadow: 0 0 0 2px var(--panel), 0 0 0 4px var(--text) }
+#folderSel { max-width: 150px; padding: 4px 6px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel) }
+.banner { padding: 8px 16px; background: var(--sel); font-size: 14px }
+#lockScreen input { padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg) }
+#content { display: flex; flex-direction: column; flex: 1; min-height: 0; padding: 14px clamp(14px, 4vw, 40px) 8px }
+#title { border: 0; outline: 0; background: transparent; font-size: 24px; font-weight: 700; padding: 4px 0 }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 4px 0 8px }
+#tagChips { display: contents }
+.chip { display: inline-flex; align-items: center; gap: 2px; padding: 0 4px 0 9px; border-radius: 99px; background: var(--sel); font-size: 13px }
+.chip.auto { padding-right: 9px; background: var(--hover); color: var(--muted) }
+.chip button { border: 0; background: transparent; padding: 0 4px; border-radius: 99px; color: var(--muted); line-height: 1.3 }
+#tagIn { border: 0; outline: 0; background: transparent; width: 110px; font-size: 13px }
+#body { flex: 1; min-height: 120px; resize: none; border: 0; outline: 0; background: transparent; line-height: 1.65; padding: 6px 0 }
+#files { display: flex; flex-direction: column; gap: 6px; padding: 6px 0; max-height: 32vh; overflow-y: auto }
+.file { display: flex; align-items: center; gap: 10px; padding: 5px 8px; border: 1px solid var(--line); border-radius: 8px }
+.file img { width: 36px; height: 36px; object-fit: cover; border-radius: 4px }
+.file .fi { width: 36px; height: 36px; display: grid; place-items: center; color: var(--muted) }
+.file .nm { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.foot { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--line) }
+
+/* Dialog and toast */
+dialog { border: 1px solid var(--line); border-radius: 12px; background: var(--panel); color: var(--text); padding: 20px; width: min(420px, calc(100% - 32px)) }
+dialog::backdrop { background: rgba(0,0,0,.45) }
+dialog h3 { margin: 0 0 6px }
+dialog p { margin: 6px 0 }
+dialog label { display: block; margin-top: 10px; font-size: 13px; color: var(--muted) }
+dialog input { width: 100%; margin-top: 3px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--text) }
+dialog .wide { margin-top: 8px }
+#toast { position: fixed; left: 50%; bottom: 20px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; transition: .2s;
+  background: var(--text); color: var(--bg); padding: 8px 14px; border-radius: 10px; z-index: 50; max-width: 90vw }
+#toast.show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto }
+#toast button { color: inherit; text-decoration: underline; margin-left: 12px }
+
+.only-mobile { display: none }
+
+/* Phones and small tablets */
+@media (max-width: 900px) {
+  .app { grid-template-columns: 1fr }
+  .only-mobile { display: inline-flex }
+  #side { position: fixed; inset: 0 auto 0 0; width: 270px; transform: translateX(-100%); transition: transform .2s; z-index: 20 }
+  .app.menu #side { transform: none }
+  .app.menu #scrim { display: block; position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 10 }
+  #editorPane { position: fixed; inset: 0; transform: translateX(100%); transition: transform .2s; z-index: 5 }
+  .app.editing #editorPane { transform: none }
+}
+
+/* Printing: only the note is printed */
+#printArea { display: none }
+@media print {
+  body > *:not(#printArea) { display: none !important }
+  body { background: #fff }
+  #printArea { display: block; color: #000; background: #fff; font-family: Georgia, serif }
+  #printArea h1 { margin: 0 0 4px }
+  #printArea .pmeta { color: #555; font-size: 12px; margin: 0 0 14px }
+  #printArea .pbody { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.55 }
+  #printArea img { display: block; max-width: 100%; margin: 12px 0; page-break-inside: avoid }
+}

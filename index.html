@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Blocks every network request the page's code could make. Notes cannot leave the browser. -->
+<meta http-equiv="Content-Security-Policy" content="connect-src data: blob:; img-src data: blob:; font-src data:; object-src 'none'; base-uri 'none'; frame-src 'none'">
+<meta name="color-scheme" content="light dark">
+<title>LocalEasyNotepad</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%232f6fed'/%3E%3Cpath d='M8 7h8M8 12h8M8 17h5' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<noscript><p style="padding:2rem">LocalEasyNotepad needs JavaScript to run.</p></noscript>
+
+<div id="app" class="app">
+
+  <!-- Sidebar -->
+  <aside id="side">
+    <div class="brand">LocalEasyNotepad</div>
+    <button id="newBtn" class="primary wide" data-ico="plus" title="New note (Alt+N)">New note</button>
+
+    <nav id="views"></nav>
+
+    <div class="head"><span>Folders</span><button id="addFolder" class="ib" data-ico="plus" title="New folder"></button></div>
+    <div id="folders"></div>
+
+    <div class="head"><span>Tags</span></div>
+    <div id="tags" class="tagcloud"></div>
+
+    <div class="sidefoot">
+      <label class="meter"><span id="meterTxt" class="small muted"></span><progress id="meter" max="100" value="0"></progress></label>
+      <div class="row">
+        <button id="themeBtn" class="ib" title="Switch light / dark mode"></button>
+        <button id="vaultBtn" class="ib" data-ico="shield" title="Vault encryption and backup"></button>
+        <a class="ib small" href="https://github.com/BNQ2k/LocalEasyNotepad" target="_blank" rel="noopener noreferrer" title="Source code on GitHub">GitHub</a>
+      </div>
+      <p class="muted small">Your notes never leave this browser.</p>
+    </div>
+  </aside>
+  <div id="scrim"></div>
+
+  <!-- Note list -->
+  <section id="listPane">
+    <div class="listhead">
+      <button id="menuBtn" class="ib only-mobile" data-ico="menu" title="Menu"></button>
+      <input id="search" type="search" placeholder="Search notes" aria-label="Search notes" autocomplete="off">
+      <button id="newBtn2" class="ib" data-ico="plus" title="New note (Alt+N)"></button>
+    </div>
+    <div class="listsub"><h2 id="listTitle">All notes</h2><button id="emptyTrash" class="danger" hidden>Empty trash</button></div>
+    <div id="list"></div>
+  </section>
+
+  <!-- Editor -->
+  <main id="editorPane">
+    <div id="empty" class="empty">
+      <p>Select a note, or start a new one.</p>
+      <button id="newBtn3" class="primary">New note</button>
+    </div>
+
+    <div id="noteView" hidden>
+      <div class="bar">
+        <button id="backBtn" class="ib only-mobile" data-ico="back" title="Back to list"></button>
+        <button id="pinBtn" class="ib" data-ico="pin" title="Pin note"></button>
+        <span id="swatches" class="swatches" role="group" aria-label="Note color"></span>
+        <select id="folderSel" title="Move to folder" aria-label="Folder"></select>
+        <span class="grow"></span>
+        <button id="expBtn" class="ib" data-ico="clock" title="Set expiry"></button>
+        <button id="lockBtn" class="ib" data-ico="lock" title="Lock with PIN or password"></button>
+        <button id="unlockRemoveBtn" class="ib" data-ico="unlock" title="Remove lock"></button>
+        <button id="dupBtn" class="ib" data-ico="copy" title="Duplicate note"></button>
+        <button id="printBtn" class="ib" data-ico="print" title="Print note"></button>
+        <button id="attachBtn" class="ib" data-ico="clip" title="Attach files"></button>
+        <button id="trashBtn" class="ib" data-ico="trash" title="Move to trash"></button>
+        <button id="restoreBtn" class="ib" data-ico="restore" title="Restore from trash"></button>
+        <button id="purgeBtn" class="ib danger" data-ico="x" title="Delete forever"></button>
+      </div>
+
+      <div id="banner" class="banner" hidden></div>
+
+      <div id="lockScreen" class="empty" hidden>
+        <svg class="ico big" viewBox="0 0 24 24"><path d="M6 11h12v10H6zM8 11V7a4 4 0 018 0v4"/></svg>
+        <p>This note is locked.</p>
+        <div class="row">
+          <input id="unlockPw" type="password" placeholder="PIN or password" aria-label="PIN or password" autocomplete="off">
+          <button id="unlockBtn" class="primary">Unlock</button>
+        </div>
+        <p id="unlockErr" class="err"></p>
+      </div>
+
+      <div id="content">
+        <input id="title" placeholder="Title" maxlength="200" autocomplete="off" aria-label="Title">
+        <div id="tagRow" class="tags"><span id="tagChips"></span><input id="tagIn" placeholder="Add tag" maxlength="40" autocomplete="off" aria-label="Add tag"></div>
+        <textarea id="body" placeholder="Start writing. Use #hashtags to organize." aria-label="Note text"></textarea>
+        <div id="files"></div>
+        <div class="foot"><span id="meta"></span><span id="status">Saved</span></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<dialog id="dlg"><form id="dlgForm"></form></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+<div id="printArea"></div>
+<input type="file" id="fileIn" multiple hidden>
+<input type="file" id="importFile" accept="application/json,.json" hidden>
+
+<script src="app.js"></script>
+</body>
+</html>
