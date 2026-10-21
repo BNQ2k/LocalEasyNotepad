@@ -6,6 +6,8 @@ Plain HTML, CSS and JavaScript. No frameworks, no build step, no dependencies.
 
 Repository: https://github.com/BNQ2k/LocalEasyNotepad
 
+![LocalEasyNotepad](img/localeasynotepad.png)
+
 ## Features
 
 - **Notes**: autosave, instant new note (`Alt+N`), search, word count
