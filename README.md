@@ -64,3 +64,11 @@ Browsers allow roughly 5 MB of `localStorage`. The meter in the sidebar shows ho
 | `style.css` | Styling and themes |
 | `app.js` | All app logic and encryption |
 | `sw.js` | Offline cache when hosted over http(s) |
+
+## Credits
+
+- BNQ2k
+- Claude Opus 5.5
+
+## License
+- no license
